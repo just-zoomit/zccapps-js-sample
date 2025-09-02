@@ -37,20 +37,47 @@ app.use(session({
 }));
 
 app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "https://source.zoom.us", "https://appssdk.zoom.us/sdk.js"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
-          connectSrc: ["'self'", "wss:", "https://zoom.us", "*.zoom.us"],
-          imgSrc: ["'self'", "data:"],
-          frameSrc: ["'self'", "*.zoom.us"],
-        },
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://source.zoom.us",
+          "https://appssdk.zoom.us",
+          "https://cdn.ngrok.com",  // <-- allow ngrok error page JS,"
+
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.ngrok.com", // <-- allow ngrok error page CSS,
+
+        ],
+        imgSrc: ["'self'", "data:", "blob:"],
+        connectSrc: [
+          "'self'",
+          "wss:",
+          "https://zoom.us",
+          "https://*.zoom.us",
+          "https://*.ngrok.app",
+          "https://*.ngrok.io"
+        ],
+        frameSrc: ["'self'", "https://*.zoom.us", "https://*.ngrok.app"],
+        frameAncestors: ["'self'", "https://*.zoom.us" , "https://*.ngrok.app/"  ], // <-- allow Zoom client to embed
+        // (Optional) If you load fonts from ngrok’s CDN during errors:
+        fontSrc: ["'self'", "https://cdn.ngrok.com", "data:"],
       },
-      referrerPolicy: { policy: 'no-referrer' },
-    })
-  );
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    referrerPolicy: { policy: "no-referrer" },
+    // If you had frameguard elsewhere, ensure it's not denying embedding:
+    // frameguard: false,
+  })
+);
 
 
 // Default route: redirect based on user agent
@@ -66,7 +93,7 @@ app.get('/', (req, res) => {
     }
   });
 
-  app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // ---- OAuth start: redirect user to Zoom ----
 app.get('/auth/start', (req, res) => {

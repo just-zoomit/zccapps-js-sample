@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact Center</title>
+    <script src="https://appssdk.zoom.us/sdk.js"></script>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+  </head>
+  <body>
+    <h1>Zoom Contact Center</h1>
+    <div id="cc-out">Loading…</div>
+
+    <script>
+      (async () => {
+        const out = document.getElementById("cc-out");
+        try {
+          await zoomSdk.config({ version: "0.16.0", capabilities: ["getRunningContext"] });
+          const rc = await zoomSdk.getRunningContext();
+          out.textContent = "Running Context: " + (typeof rc === "string" ? rc : JSON.stringify(rc));
+          // ... add the rest of your Contact Center UI logic here ...
+        } catch (e) {
+          out.innerHTML = "<p class='error'>Failed to init Contact Center page.</p><pre>" + (e?.message || e) + "</pre>";
+        }
+      })();
+    </script>
+  </body>
+</html>
