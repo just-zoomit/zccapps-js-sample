@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>ZCC App Minimal example (with localStorage)</title>
+    <title>ZCC App Minimal (with localStorage)</title>
     <script src="https://appssdk.zoom.us/sdk.js"></script>
     <style>
       body { font-family: system-ui, sans-serif; margin: 18px; }
@@ -15,27 +15,30 @@
   <body>
     <h1>Zoom Contact Center</h1>
 
-    <div class="row"><strong>Running Context:</strong> <span id="rc">—</span></div>
-    <div class="row"><strong>Engagement Id:</strong> <span id="eid">—</span></div>
-    <div class="row"><strong>Status:</strong> <span id="status">—</span></div>
+    <div class="row"><strong>Running Context:</strong> <span id="running-context">—</span></div>
+    <div class="row"><strong>Engagement ID:</strong> <span id="engagement-id">—</span></div>
+    <div class="row"><strong>Status:</strong> <span id="engagement-status">—</span></div>
 
     <div class="row">
-      <label for="notes"><strong>Notes (saved per engagement)</strong></label><br />
-      <textarea id="notes" placeholder="Type notes…"></textarea>
+      <label for="notes-textarea"><strong>Notes (saved per engagement)</strong></label><br />
+      <textarea id="notes-textarea" placeholder="Type notes…"></textarea>
       <div class="hint">Notes auto-save for this engagement and clear when it ends.</div>
     </div>
 
     <script>
       (async () => {
-        const $ = (id) => document.getElementById(id);
-        const setText = (id, v) => ($(id).textContent = v);
-        const keyFor = (id) => `zcc-notes:${id}`;
+        /** ---------- Tiny DOM helpers ---------- */
+        const byId = (id) => document.getElementById(id);
+        const setTextContent = (id, value) => { byId(id).textContent = value; };
 
-        // Safe wrappers in case storage is restricted
-        const LS = {
-          get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
-          set: (k, v) => { try { localStorage.setItem(k, v); } catch {} },
-          del: (k) => { try { localStorage.removeItem(k); } catch {} },
+        /** Build the localStorage key for a given engagement id */
+        const notesKeyForEngagement = (engagementId) => `zcc-notes:${engagementId}`;
+
+        /** Safe localStorage wrapper (avoids exceptions in restrictive envs) */
+        const storage = {
+          get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+          set(key, value) { try { localStorage.setItem(key, value); } catch {} },
+          remove(key) { try { localStorage.removeItem(key); } catch {} },
         };
 
         if (typeof zoomSdk === "undefined") {
@@ -43,6 +46,7 @@
           return;
         }
 
+        /** ---------- Configure SDK ---------- */
         await zoomSdk.config({
           version: "0.16.0",
           capabilities: [
@@ -54,49 +58,67 @@
           ],
         });
 
-        // Initial load
-        const rc = await zoomSdk.getRunningContext();
-        setText("rc", typeof rc === "string" ? rc : JSON.stringify(rc));
+        /** ---------- Initial values ---------- */
+        const runningContext = await zoomSdk.getRunningContext();
+        setTextContent(
+          "running-context",
+          typeof runningContext === "string" ? runningContext : JSON.stringify(runningContext)
+        );
 
-        let engagementId = "";
-        let status = "";
+        let currentEngagementId = "";
+        let currentEngagementState = "";
 
-        async function refresh() {
-          const [ctx, st] = await Promise.all([
+        /** Load context + status and hydrate notes for the active engagement */
+        async function loadEngagementInfo() {
+          const [contextResponse, statusResponse] = await Promise.all([
             zoomSdk.getEngagementContext().catch(() => null),
             zoomSdk.getEngagementStatus().catch(() => null),
           ]);
-          engagementId = ctx?.engagementContext?.engagementId || "";
-          status = st?.engagementStatus?.state || "";
-          setText("eid", engagementId || "—");
-          setText("status", status || "—");
 
-          // Load any saved notes for this engagement
-          $("notes").value = engagementId ? (LS.get(keyFor(engagementId)) || "") : "";
+          currentEngagementId = contextResponse?.engagementContext?.engagementId || "";
+          currentEngagementState = statusResponse?.engagementStatus?.state || "";
+
+          setTextContent("engagement-id", currentEngagementId || "—");
+          setTextContent("engagement-status", currentEngagementState || "—");
+
+          // Load saved notes for this engagement (if any)
+          byId("notes-textarea").value = currentEngagementId
+            ? (storage.get(notesKeyForEngagement(currentEngagementId)) || "")
+            : "";
         }
 
-        // Auto-save notes per engagement
-        $("notes").addEventListener("input", (e) => {
-          if (engagementId) LS.set(keyFor(engagementId), e.target.value);
-        });
-
-        // Live updates
-        zoomSdk.addEventListener("onEngagementContextChange", (event) => {
-          engagementId = event?.engagementContext?.engagementId || "";
-          setText("eid", engagementId || "—");
-          $("notes").value = engagementId ? (LS.get(keyFor(engagementId)) || "") : "";
-        });
-
-        zoomSdk.addEventListener("onEngagementStatusChange", (event) => {
-          status = event?.engagementStatus?.state || "";
-          setText("status", status || "—");
-          if (status === "end" && engagementId) {
-            LS.del(keyFor(engagementId));
-            $("notes").value = "";
+        /** ---------- Notes auto-save (per engagement) ---------- */
+        byId("notes-textarea").addEventListener("input", (e) => {
+          if (currentEngagementId) {
+            storage.set(notesKeyForEngagement(currentEngagementId), e.target.value);
           }
         });
 
-        await refresh();
+        /** ---------- Live updates from ZCC ---------- */
+        function handleEngagementContextChange(evt) {
+          currentEngagementId = evt?.engagementContext?.engagementId || "";
+          setTextContent("engagement-id", currentEngagementId || "—");
+          byId("notes-textarea").value = currentEngagementId
+            ? (storage.get(notesKeyForEngagement(currentEngagementId)) || "")
+            : "";
+        }
+
+        function handleEngagementStatusChange(evt) {
+          currentEngagementState = evt?.engagementStatus?.state || "";
+          setTextContent("engagement-status", currentEngagementState || "—");
+
+          // Clear saved notes when engagement ends
+          if (currentEngagementState === "end" && currentEngagementId) {
+            storage.remove(notesKeyForEngagement(currentEngagementId));
+            byId("notes-textarea").value = "";
+          }
+        }
+
+        zoomSdk.addEventListener("onEngagementContextChange", handleEngagementContextChange);
+        zoomSdk.addEventListener("onEngagementStatusChange", handleEngagementStatusChange);
+
+        /** Kick off initial load */
+        await loadEngagementInfo();
       })();
     </script>
   </body>
