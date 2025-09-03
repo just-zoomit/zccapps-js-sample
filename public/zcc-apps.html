@@ -1,43 +1,102 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Zoom Contact Center</title>
-
+    <meta charset="utf-8" />
+    <title>ZCC App Minimal example (with localStorage)</title>
     <script src="https://appssdk.zoom.us/sdk.js"></script>
-    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 18px; }
+      .row { margin: 8px 0; }
+      textarea { width: 100%; min-height: 140px; }
+      .hint { opacity: 0.7; font-size: 0.9em; }
+    </style>
   </head>
+
   <body>
     <h1>Zoom Contact Center</h1>
-    <div id="cc-out">Loading…</div>
+
+    <div class="row"><strong>Running Context:</strong> <span id="rc">—</span></div>
+    <div class="row"><strong>Engagement Id:</strong> <span id="eid">—</span></div>
+    <div class="row"><strong>Status:</strong> <span id="status">—</span></div>
+
+    <div class="row">
+      <label for="notes"><strong>Notes (saved per engagement)</strong></label><br />
+      <textarea id="notes" placeholder="Type notes…"></textarea>
+      <div class="hint">Notes auto-save for this engagement and clear when it ends.</div>
+    </div>
 
     <script>
       (async () => {
-        const out = document.getElementById("cc-out");
-        try {
-          await zoomSdk.config({
-            version: "0.16.0",
-            capabilities: [
-              "getRunningContext",
-              "getEngagementContext",
-              "getEngagementStatus",
-              "onEngagementContextChange",
-              "onEngagementMediaRedirect",
-              "onEngagementStatusChange",
-              "onEngagementVariableValueChange",
-            ],
-          });
+        const $ = (id) => document.getElementById(id);
+        const setText = (id, v) => ($(id).textContent = v);
+        const keyFor = (id) => `zcc-notes:${id}`;
 
-          const rc = await zoomSdk.getRunningContext();
-          out.textContent =
-            "Running Context: " +
-            (typeof rc === "string" ? rc : JSON.stringify(rc));
-          // ... add the rest of your Contact Center UI logic here ...
-        } catch (e) {
-          out.innerHTML =
-            "<p class='error'>Failed to init Contact Center page.</p><pre>" +
-            (e?.message || e) +
-            "</pre>";
+        // Safe wrappers in case storage is restricted
+        const LS = {
+          get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
+          set: (k, v) => { try { localStorage.setItem(k, v); } catch {} },
+          del: (k) => { try { localStorage.removeItem(k); } catch {} },
+        };
+
+        if (typeof zoomSdk === "undefined") {
+          document.body.insertAdjacentHTML("beforeend", "<p class='hint'>zoomSdk not found.</p>");
+          return;
         }
+
+        await zoomSdk.config({
+          version: "0.16.0",
+          capabilities: [
+            "getRunningContext",
+            "getEngagementContext",
+            "getEngagementStatus",
+            "onEngagementContextChange",
+            "onEngagementStatusChange",
+          ],
+        });
+
+        // Initial load
+        const rc = await zoomSdk.getRunningContext();
+        setText("rc", typeof rc === "string" ? rc : JSON.stringify(rc));
+
+        let engagementId = "";
+        let status = "";
+
+        async function refresh() {
+          const [ctx, st] = await Promise.all([
+            zoomSdk.getEngagementContext().catch(() => null),
+            zoomSdk.getEngagementStatus().catch(() => null),
+          ]);
+          engagementId = ctx?.engagementContext?.engagementId || "";
+          status = st?.engagementStatus?.state || "";
+          setText("eid", engagementId || "—");
+          setText("status", status || "—");
+
+          // Load any saved notes for this engagement
+          $("notes").value = engagementId ? (LS.get(keyFor(engagementId)) || "") : "";
+        }
+
+        // Auto-save notes per engagement
+        $("notes").addEventListener("input", (e) => {
+          if (engagementId) LS.set(keyFor(engagementId), e.target.value);
+        });
+
+        // Live updates
+        zoomSdk.addEventListener("onEngagementContextChange", (event) => {
+          engagementId = event?.engagementContext?.engagementId || "";
+          setText("eid", engagementId || "—");
+          $("notes").value = engagementId ? (LS.get(keyFor(engagementId)) || "") : "";
+        });
+
+        zoomSdk.addEventListener("onEngagementStatusChange", (event) => {
+          status = event?.engagementStatus?.state || "";
+          setText("status", status || "—");
+          if (status === "end" && engagementId) {
+            LS.del(keyFor(engagementId));
+            $("notes").value = "";
+          }
+        });
+
+        await refresh();
       })();
     </script>
   </body>
