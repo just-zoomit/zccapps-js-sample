@@ -36,48 +36,29 @@ app.use(session({
   cookie: { secure: false } // set true when behind HTTPS + proxy
 }));
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://source.zoom.us",
-          "https://appssdk.zoom.us",
-          "https://cdn.ngrok.com",  // <-- allow ngrok error page JS,"
-
-        ],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://cdn.ngrok.com", // <-- allow ngrok error page CSS,
-
-        ],
-        imgSrc: ["'self'", "data:", "blob:"],
-        connectSrc: [
-          "'self'",
-          "wss:",
-          "https://zoom.us",
-          "https://*.zoom.us",
-          "https://*.ngrok.app",
-          "https://*.ngrok.io"
-        ],
-        frameSrc: ["'self'", "https://*.zoom.us", "https://*.ngrok.app"],
-        frameAncestors: ["'self'", "https://*.zoom.us" , "https://*.ngrok.app/"  ], // <-- allow Zoom client to embed
-        // (Optional) If you load fonts from ngrok’s CDN during errors:
-        fontSrc: ["'self'", "https://cdn.ngrok.com", "data:"],
-      },
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'", "'unsafe-inline'",
+        "https://source.zoom.us",
+        "https://appssdk.zoom.us",
+        "https://cdn.ngrok.com"
+      ],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.ngrok.com"],
+      fontSrc:  ["'self'", "data:", "https://cdn.ngrok.com"],
+      imgSrc:   ["'self'", "data:", "blob:"],
+      connectSrc: [
+        "'self'", "wss:",
+        "https://zoom.us", "https://*.zoom.us",
+        "https://*.ngrok.app", "https://*.ngrok.io"
+      ],
+      frameAncestors: ["'self'", "https://*.zoom.us"],   // add this
     },
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-    referrerPolicy: { policy: "no-referrer" },
-    // If you had frameguard elsewhere, ensure it's not denying embedding:
-    // frameguard: false,
-  })
-);
+  },
+}));
 
 
 // Default route: redirect based on user agent

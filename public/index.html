@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Zoom App Context Data</title>
+
     <script src="https://appssdk.zoom.us/sdk.js"></script>
 
     <link rel="stylesheet" type="text/css" href="./styles.css" />
@@ -100,26 +101,26 @@
           await zoomSdk.config({ version: "0.16.0", capabilities });
 
           // --- Check running context ASAP and jump to the Contact Center page
-          // try {
-          //   const rc = await zoomSdk.getRunningContext(); // ensures the API is invoked here too
-          //   // Be tolerant of different return shapes (string vs object)
-          //   const rcStr =
-          //     typeof rc === "string"
-          //       ? rc
-          //       : rc?.runningContext || rc?.context || JSON.stringify(rc);
+          try {
+            const rc = await zoomSdk.getRunningContext(); // ensures the API is invoked here too
+            // Be tolerant of different return shapes (string vs object)
+            const rcStr =
+              typeof rc === "string"
+                ? rc
+                : rc?.runningContext || rc?.context || JSON.stringify(rc);
 
-          //   if (
-          //     typeof rcStr === "string" &&
-          //     rcStr.toLowerCase().includes("incontactcenter")
-          //   ) {
-          //     // Redirect to your Zoom Contact Center page in /public
-          //     window.location.replace("/zcc-apps.html");
-          //     return; // stop rendering the rest of this page
-          //   }
-          // } catch (e) {
-          //   // If this call fails, just proceed with the normal page
-          //   console.warn("getRunningContext pre-check failed; continuing:", e);
-          // }
+            if (
+              typeof rcStr === "string" &&
+              rcStr.toLowerCase().includes("incontactcenter")
+            ) {
+              // Redirect to your Zoom Contact Center page in /public
+              window.location.replace("/zcc-apps.html");
+              return; // stop rendering the rest of this page
+            }
+          } catch (e) {
+            // If this call fails, just proceed with the normal page
+            console.warn("getRunningContext pre-check failed; continuing:", e);
+          }
 
           // remove "Initializing…" once ready
           clearOut();
