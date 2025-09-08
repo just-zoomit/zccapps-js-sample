@@ -42,9 +42,11 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: [
-        "'self'", "'unsafe-inline'",
-        "https://source.zoom.us",
+        "'self'",
+        "'unsafe-inline'",
         "https://appssdk.zoom.us",
+        "https://source.zoom.us",
+        "https://cdn.jsdelivr.net",     // ⬅️ allow jsDelivr (Chart.js CDN)
         "https://cdn.ngrok.com"
       ],
       styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.ngrok.com"],

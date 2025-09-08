@@ -23,17 +23,18 @@
                     "optional": false
                 },
                 {
-                    "scope": "zoomapp:inmeeting",
+                    "scope": "team_chat:read:user_message",
                     "optional": false
                 },
                 {
-                    "scope": "team_chat:read:user_message",
+                    "scope": "zoomapp:inmeeting",
                     "optional": false
                 }
             ]
         },
         "features": {
             "products": [
+                "ZOOM_CONTACT_CENTER",
                 "ZOOM_MEETING"
             ],
             "development_home_uri": "https://example.ngrok.app",
@@ -41,10 +42,6 @@
             "domain_allow_list": [
                 {
                     "domain": "appssdk.zoom.us",
-                    "explanation": ""
-                },
-                {
-                    "domain": "donte.ngrok.io",
                     "explanation": ""
                 },
                 {
@@ -61,11 +58,17 @@
                     "enable": true,
                     "zoom_app_apis": [
                         "getAppContext",
+                        "getEngagementContext",
+                        "getEngagementStatus",
                         "getMeetingContext",
                         "getMeetingUUID",
                         "getRunningContext",
                         "getSupportedJsApis",
-                        "getUserContext"
+                        "getUserContext",
+                        "onEngagementContextChange",
+                        "onEngagementMediaRedirect",
+                        "onEngagementStatusChange",
+                        "onEngagementVariableValueChange"
                     ]
                 },
                 "guest_mode": {
