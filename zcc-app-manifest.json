@@ -64,9 +64,10 @@
                         "getMeetingUUID",
                         "getRunningContext",
                         "getSupportedJsApis",
+                        "getAppVariableList",
+                        "getEngagementVariableValue",
                         "getUserContext",
                         "onEngagementContextChange",
-                        "onEngagementMediaRedirect",
                         "onEngagementStatusChange",
                         "onEngagementVariableValueChange"
                     ]
