@@ -26,9 +26,7 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
 
 ## Setup in Zoom Marketplace app build flow
 
-The Zoom Marketplace build flow for a Zoom App may be found [here](https://marketplace.zoom.us/develop/create). You will need a developer account with Zoom Apps enabled.
-
-You can create and then update an app using the zcc-app-manifest.json app manifest JSON object:
+The Zoom Marketplace build flow for a Zoom App may be found [here](https://marketplace.zoom.us/develop/create). You will need a developer account with Zoom Apps enabled. You can create and then update an app using the zcc-app-manifest.json app manifest JSON object:
 
 * [Zoom Contact Center App Manifest JSON object](/zcc-app-manifest.json)
 
@@ -51,14 +49,15 @@ PORT=3000
 npm install
 node server.js
 ```
+## Codelab
+
+[Building a Zoom Contact Center Integration: Step-by-Step Guide](https://just-zoomit.github.io/zccapps-js-sample-codelab/#0)
 
 ### Deployment
 
 The JavaScript Sample App can be easily deployed to [GitHub Pages](#github-pages), or [another static web hosting service](#other-static-web-hosting), like an AWS S3 bucket.
 
-### Codelab
 
-[Building a Zoom Contact Center Integration: Step-by-Step Guide](https://just-zoomit.github.io/zccapps-js-sample-codelab/#0)
 
 ### GitHub Pages
 
