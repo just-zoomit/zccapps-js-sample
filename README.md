@@ -51,7 +51,7 @@ node server.js
 ```
 ## Codelab
 
-[Building a Zoom Contact Center Integration: Step-by-Step Guide](https://just-zoomit.github.io/zccapps-js-sample-codelab/#0)
+* [Building a Zoom Contact Center Integration: Step-by-Step Guide](https://just-zoomit.github.io/zccapps-js-sample-codelab/#0)
 
 ### Deployment
 
