@@ -52,7 +52,8 @@ node server.js
 ## Codelab
 
 * [Building a Zoom Contact Center Integration: Step-by-Step Guide](https://just-zoomit.github.io/zccapps-js-sample-codelab/#0)
-
+* 
+---
 ### Deployment
 
 The JavaScript Sample App can be easily deployed to [GitHub Pages](#github-pages), or [another static web hosting service](#other-static-web-hosting), like an AWS S3 bucket.
