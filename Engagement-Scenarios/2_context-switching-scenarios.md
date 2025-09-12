@@ -1,4 +1,4 @@
-# Zoom Contact Center Engagement Scenarios – Context Switching
+# Engagement Scenarios – Context Switching
 
 This document provides step-by-step test flows for validating how your Zoom App handles **context switching between active engagements** in the Zoom Contact Center (ZCC).  
 
