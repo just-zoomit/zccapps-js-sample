@@ -3,7 +3,13 @@
 This document provides step-by-step test flows for validating how your Zoom App handles **context switching between active engagements** in the Zoom Contact Center (ZCC).  
 
 Mark each checkbox as ✅ (Pass) or ❌ (Fail) as you go.
-
+---
+### Prerequisites
+* Contact Center License
+* Zoom Global Phone Number
+* For Web Chat, Zoom Contact Center SDK or
+* For SMS, 10DLC enable on your Zoom account 
+  
 ---
 
 ## Pre-checks (required for all flows)

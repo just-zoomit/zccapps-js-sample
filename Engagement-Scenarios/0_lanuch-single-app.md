@@ -4,6 +4,10 @@ This test validates that your app can launch inside Zoom Contact Center during a
 
 Mark each box as you test. ✅ = Pass, ❌ = Fail.
 ---
+### Prerequisites
+* Contact Center License
+* Zoom Global Phone Number
+---
 
 ### Trigger
 

@@ -51,6 +51,10 @@
                 {
                     "domain": "cdn.ngrok.com",
                     "explanation": ""
+                },
+                {
+                    "domain": "cdn.jsdelivr.net",
+                    "explanation": ""
                 }
             ],
             "in_client_feature": {
@@ -58,16 +62,17 @@
                     "enable": true,
                     "zoom_app_apis": [
                         "getAppContext",
+                        "getAppVariableList",
                         "getEngagementContext",
                         "getEngagementStatus",
+                        "getEngagementVariableValue",
                         "getMeetingContext",
                         "getMeetingUUID",
                         "getRunningContext",
                         "getSupportedJsApis",
-                        "getAppVariableList",
-                        "getEngagementVariableValue",
                         "getUserContext",
                         "onEngagementContextChange",
+                        "onEngagementMediaRedirect",
                         "onEngagementStatusChange",
                         "onEngagementVariableValueChange"
                     ]
