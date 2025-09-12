@@ -1,4 +1,4 @@
-# Engagement Scenario — Launching Multiple Apps in an Engagement
+# Engagement Scenario: Launching Multiple Apps in an Engagement
 
 This test validates how your app behaves when multiple Zoom Apps are open during the same engagement.  
 Your app should still receive engagement status events even if it is not the foreground app at the time of wrap-up and end.
