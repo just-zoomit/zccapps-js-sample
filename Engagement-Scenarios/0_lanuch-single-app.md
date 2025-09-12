@@ -1,4 +1,4 @@
-## Engagement Scenario — Simple Engagement Sequence / App Launch  – Test Checklist
+## Engagement Scenario — Simple Engagement Sequence / App Launch
 
 This test validates that your app can launch inside Zoom Contact Center during an active engagement and correctly handle engagement context and status lifecycle events.
 
