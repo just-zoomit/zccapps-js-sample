@@ -16,7 +16,7 @@ Mark each box as you test. ✅ = Pass, ❌ = Fail.
 
 Use the Zoom Contact Center SDK for web demo site for engagement scenario tests.
 
-* [Zoom Contact Center and Zoom Virtual Agent URL](https://zcx.dev.public.zoomdemos.com/jams)
+* [Zoom Contact Center and Zoom Virtual Agent Demo Site](https://zcx.dev.public.zoomdemos.com/jams)
 
 ---
 
