@@ -12,6 +12,14 @@ Mark each box as you test. ✅ = Pass, ❌ = Fail.
 * For SMS, 10DLC enable on your Zoom account 
 ---
 
+### Zoom Contact Center SDK for web demo site
+
+Use the Zoom Contact Center SDK for web demo site for engagement scenario tests.
+
+* [Zoom Contact Center and Zoom Virtual Agent URL](https://zcx.dev.public.zoomdemos.com/jams)
+
+---
+
 ### Trigger
 
 1. Start a **new engagement** (e.g., inbound voice, chat, or SMS) → agent accepts  

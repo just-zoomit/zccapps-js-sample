@@ -12,6 +12,14 @@ Mark each checkbox as ✅ (Pass) or ❌ (Fail) as you go.
   
 ---
 
+### Zoom Contact Center SDK for web demo site
+
+Use the Zoom Contact Center SDK for web demo site for engagement scenario tests.
+
+* [Zoom Contact Center and Zoom Virtual Agent URL](https://zcx.dev.public.zoomdemos.com/jams)
+
+---
+
 ## Pre-checks (required for all flows)
 
 - [ ] Agent signed in with **ZCC license** and opted into required queues  
