@@ -3,7 +3,7 @@
 This guide shows how to create a general app with a pre-defined configuration a Zoom Contact Center App app using the **App Manifest API**.
 
 
-### Start your Ngrok (reverse proxy)
+### Set local developer env with Ngrok (reverse proxy)
 Zoom Apps do not support localhost, and must be served over https. To develop locally, you need to tunnel traffic to this application via https.
 
 ```
