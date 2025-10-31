@@ -26,12 +26,14 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
      * View marketplace app information for the account
 
 3. Use the [Update an app by manifest](https://developers.zoom.us/docs/api/marketplace/#tag/manifest/put/marketplace/apps/{appId}/manifest) endpoint to quickly configure a Zoom Marketplace app.
-  
+
+## Example request
 
 ```
 PUT /marketplace/apps/{appId}/manifest
 ```
 
+Request body:
 
 ```
 {
