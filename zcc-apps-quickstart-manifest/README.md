@@ -1,4 +1,4 @@
-# Create a Zoom app with the App Manifest API
+# Create a Zoom Contact Center app with the App Manifest API
 
 This guide shows how to create a general app with a pre-defined configuration a Zoom Contact Center App app using the **App Manifest API**.
 
@@ -23,8 +23,7 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
 2. On the Scope page, select the following:
   * Edit marketplace app 
   * View marketplace app information for the account
-3.
-4. Use the [Update an app by manifest](https://developers.zoom.us/docs/api/marketplace/#tag/manifest/put/marketplace/apps/{appId}/manifest) endpoint to quickly configure a Zoom Marketplace app.
+3. Use the [Update an app by manifest](https://developers.zoom.us/docs/api/marketplace/#tag/manifest/put/marketplace/apps/{appId}/manifest) endpoint to quickly configure a Zoom Marketplace app.
   
 
 ```
