@@ -69,7 +69,7 @@ app.get('/', (req, res) => {
   
     if (userAgent.includes('ZoomApps')) {
       // Serve index.html for Zoom client
-      res.sendFile(path.join(__dirname, 'public', 'index.html'));
+      res.sendFile(path.join(__dirname, 'public', 'zoomapp-home.html'));
     } else {
       // Serve browser fallback page
       res.sendFile(path.join(__dirname, 'public', 'browser.html'));
