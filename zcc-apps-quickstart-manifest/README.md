@@ -20,9 +20,11 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
 ### Create and configure Marketplace App
 
 1. Navigate to the [Zoom Makertplace](https://marketplace.zoom.us/user/build), create a general app, and take note of credentials you will need them for making API request. 
+
 2. On the Scope page, select the following:
-  * Edit marketplace app 
-  * View marketplace app information for the account
+     * Edit marketplace app 
+     * View marketplace app information for the account
+
 3. Use the [Update an app by manifest](https://developers.zoom.us/docs/api/marketplace/#tag/manifest/put/marketplace/apps/{appId}/manifest) endpoint to quickly configure a Zoom Marketplace app.
   
 
