@@ -1,6 +1,6 @@
 # Zoom Contact Center App SDK JavaScript sample
 
-This repo is an HTML / CSS / JavaScript sample app that uses the Zoom Contact Center Apps to integrate a third party app into the Zoom client.
+This repo is an HTML / CSS / JavaScript sample app that uses Zoom Conter the Zoom App SDK  to integrate a third party app into the Zoom client
 
 App has reference implementation for:
 
