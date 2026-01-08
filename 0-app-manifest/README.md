@@ -27,6 +27,7 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
 
 > [!NOTE]
 > Take note of your app ID in the URL after app creation -- you will need it to later on.
+---
 
 ### 2. Retrieve app credentials
 
@@ -35,12 +36,15 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
 
 > [!Note]
 > Use these credentials for [authorization](https://developers.zoom.us/docs/integrations/oauth/).
+---
 
 ### 3. Add required scopes
 
  On the Scope page, select the following:
-     * Edit marketplace app 
-     * View marketplace app information for the account
+ *  Edit marketplace app
+ *  View marketplace app information for the account
+ --- 
+
 ### 4. Update the app using the Manifest API
 
 Use the following endpoint to quickly configure a Zoom Marketplace app:
@@ -51,6 +55,8 @@ Use the following endpoint to quickly configure a Zoom Marketplace app:
 PUT /marketplace/apps/{appId}/manifest
 ```
 👉 [Update an app by manifest API endpoint](https://developers.zoom.us/docs/api/marketplace/#tag/manifest/put/marketplace/apps/{appId}/manifest)
+
+---
 
 ### 5. Use Manifest JSON object to create Zoom App
  Use an API tool like Postman to send a PUT request to the manifest endpoint with the JSON object below as the request body.
