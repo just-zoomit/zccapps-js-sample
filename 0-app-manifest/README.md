@@ -49,7 +49,7 @@ Please copy the https origin from the Ngrok terminal output and paste it in the 
 
 Use the following endpoint to quickly configure a Zoom Marketplace app:
 
-## Example request
+**Example request:**
 
 ```
 PUT /marketplace/apps/{appId}/manifest
